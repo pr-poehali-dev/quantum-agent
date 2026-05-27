@@ -1,5 +1,4 @@
 import type React from "react"
-
 import { useState } from "react"
 import { Link } from "react-router-dom"
 import { Button } from "@/components/ui/button"
@@ -13,15 +12,15 @@ import { Home, ChevronRight, Upload, X } from "lucide-react"
 
 export default function NewPropertyPage() {
   const [images, setImages] = useState<string[]>([])
-  const [amenities, setAmenities] = useState({
-    pool: false,
-    garage: false,
-    garden: false,
-    balcony: false,
-    elevator: false,
-    airConditioning: false,
-    furnished: false,
-    petFriendly: false,
+  const [includes, setIncludes] = useState({
+    medal: false,
+    tshirt: false,
+    nutrition: false,
+    timing: false,
+    photo: false,
+    certificate: false,
+    parking: false,
+    firstAid: false,
   })
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,7 +38,7 @@ export default function NewPropertyPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    alert("Объявление успешно создано!")
+    alert("Мероприятие успешно добавлено!")
   }
 
   return (
@@ -51,43 +50,46 @@ export default function NewPropertyPage() {
         </Link>
         <ChevronRight className="h-4 w-4" />
         <Link to="/properties" className="hover:text-foreground">
-          Объекты
+          События
         </Link>
         <ChevronRight className="h-4 w-4" />
-        <span className="text-foreground">Новое объявление</span>
+        <span className="text-foreground">Новое мероприятие</span>
       </div>
 
       <div className="mb-8">
-        <h1 className="text-3xl font-bold">Разместить объявление</h1>
-        <p className="text-muted-foreground">Заполните форму ниже, чтобы добавить ваш объект</p>
+        <h1 className="text-3xl font-bold">Добавить мероприятие</h1>
+        <p className="text-muted-foreground">Заполните форму ниже, чтобы разместить своё спортивное событие</p>
       </div>
 
       <form onSubmit={handleSubmit}>
         <div className="grid gap-8 md:grid-cols-[2fr_1fr]">
           <Card>
             <CardHeader>
-              <CardTitle>Информация об объекте</CardTitle>
-              <CardDescription>Основные характеристики недвижимости</CardDescription>
+              <CardTitle>Основная информация</CardTitle>
+              <CardDescription>Расскажите о вашем мероприятии</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="title">Название объявления</Label>
-                <Input id="title" placeholder="например, Современная квартира в центре" required />
+                <Label htmlFor="title">Название мероприятия</Label>
+                <Input id="title" placeholder="например, Городской марафон «Весенний забег»" required />
               </div>
 
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-2">
-                  <Label htmlFor="type">Тип недвижимости</Label>
+                  <Label htmlFor="type">Вид спорта</Label>
                   <Select required>
                     <SelectTrigger id="type">
-                      <SelectValue placeholder="Выберите тип" />
+                      <SelectValue placeholder="Выберите вид" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="house">Дом</SelectItem>
-                      <SelectItem value="apartment">Квартира</SelectItem>
-                      <SelectItem value="condo">Апартаменты</SelectItem>
-                      <SelectItem value="townhouse">Таунхаус</SelectItem>
-                      <SelectItem value="land">Участок</SelectItem>
+                      <SelectItem value="run">🏃 Бег</SelectItem>
+                      <SelectItem value="football">⚽ Футбол</SelectItem>
+                      <SelectItem value="swim">🏊 Плавание</SelectItem>
+                      <SelectItem value="bike">🚴 Велоспорт</SelectItem>
+                      <SelectItem value="basketball">🏀 Баскетбол</SelectItem>
+                      <SelectItem value="tennis">🎾 Теннис</SelectItem>
+                      <SelectItem value="volleyball">🏐 Волейбол</SelectItem>
+                      <SelectItem value="other">🏅 Другое</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -98,44 +100,53 @@ export default function NewPropertyPage() {
                       <SelectValue placeholder="Выберите статус" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="available">Доступно</SelectItem>
-                      <SelectItem value="pending">Бронь</SelectItem>
-                      <SelectItem value="sold">Продано</SelectItem>
+                      <SelectItem value="open">Открыта регистрация</SelectItem>
+                      <SelectItem value="soon">Скоро</SelectItem>
+                      <SelectItem value="finished">Завершено</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
               </div>
 
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="space-y-2">
+                  <Label htmlFor="price">Взнос за участие (₽)</Label>
+                  <Input id="price" type="number" min="0" step="100" placeholder="0 — бесплатно" required />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="participants">Макс. участников</Label>
+                  <Input id="participants" type="number" min="1" required />
+                </div>
+              </div>
+
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="space-y-2">
+                  <Label htmlFor="date">Дата проведения</Label>
+                  <Input id="date" type="date" required />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="duration">Длительность (часов)</Label>
+                  <Input id="duration" type="number" min="1" max="72" required />
+                </div>
+              </div>
+
               <div className="space-y-2">
-                <Label htmlFor="price">Цена (руб.)</Label>
-                <Input id="price" type="number" min="0" step="100000" required />
-              </div>
-
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div className="space-y-2">
-                  <Label htmlFor="bedrooms">Комнат</Label>
-                  <Input id="bedrooms" type="number" min="0" required />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="bathrooms">Санузлов</Label>
-                  <Input id="bathrooms" type="number" min="0" step="1" required />
-                </div>
-              </div>
-
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div className="space-y-2">
-                  <Label htmlFor="squareFeet">Площадь (м2)</Label>
-                  <Input id="squareFeet" type="number" min="0" required />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="yearBuilt">Год постройки</Label>
-                  <Input id="yearBuilt" type="number" min="1900" max={new Date().getFullYear()} required />
-                </div>
+                <Label htmlFor="format">Формат участия</Label>
+                <Select required>
+                  <SelectTrigger id="format">
+                    <SelectValue placeholder="Выберите формат" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="individual">Индивидуальный</SelectItem>
+                    <SelectItem value="team">Командный</SelectItem>
+                    <SelectItem value="spectator">Для зрителей</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="description">Описание</Label>
-                <Textarea id="description" placeholder="Опишите ваш объект..." className="min-h-[150px]" required />
+                <Textarea id="description" placeholder="Расскажите подробнее о мероприятии: трасса, условия, призы..." className="min-h-[150px]" required />
               </div>
             </CardContent>
           </Card>
@@ -143,10 +154,14 @@ export default function NewPropertyPage() {
           <div className="space-y-8">
             <Card>
               <CardHeader>
-                <CardTitle>Расположение</CardTitle>
-                <CardDescription>Где находится ваш объект?</CardDescription>
+                <CardTitle>Место проведения</CardTitle>
+                <CardDescription>Где пройдёт ваше мероприятие?</CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
+                <div className="space-y-2">
+                  <Label htmlFor="venue">Название площадки</Label>
+                  <Input id="venue" placeholder="Парк Горького" required />
+                </div>
                 <div className="space-y-2">
                   <Label htmlFor="street">Адрес</Label>
                   <Input id="street" required />
@@ -157,18 +172,8 @@ export default function NewPropertyPage() {
                     <Input id="city" required />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="state">Район/Область</Label>
+                    <Label htmlFor="state">Регион</Label>
                     <Input id="state" required />
-                  </div>
-                </div>
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <div className="space-y-2">
-                    <Label htmlFor="zip">Индекс</Label>
-                    <Input id="zip" required />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="country">Страна</Label>
-                    <Input id="country" defaultValue="Россия" required />
                   </div>
                 </div>
               </CardContent>
@@ -176,12 +181,12 @@ export default function NewPropertyPage() {
 
             <Card>
               <CardHeader>
-                <CardTitle>Контактная информация</CardTitle>
+                <CardTitle>Контакты организатора</CardTitle>
                 <CardDescription>Как с вами связаться?</CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="space-y-2">
-                  <Label htmlFor="contactName">Контактное лицо</Label>
+                  <Label htmlFor="contactName">Имя организатора</Label>
                   <Input id="contactName" required />
                 </div>
                 <div className="space-y-2">
@@ -201,44 +206,29 @@ export default function NewPropertyPage() {
           <Card>
             <CardHeader>
               <CardTitle>Фотографии</CardTitle>
-              <CardDescription>Загрузите фото объекта (до 10 штук)</CardDescription>
+              <CardDescription>Загрузите фото мероприятия (до 10 штук)</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="mb-4">
                 <Label
-                  htmlFor="images"
-                  className="flex h-32 cursor-pointer flex-col items-center justify-center rounded-lg border border-dashed border-input bg-muted/50 px-4 py-5 text-center"
+                  htmlFor="image-upload"
+                  className="flex cursor-pointer flex-col items-center justify-center rounded-lg border border-dashed p-8 text-center hover:bg-muted/50"
                 >
-                  <Upload className="mb-2 h-6 w-6 text-muted-foreground" />
-                  <div className="text-sm text-muted-foreground">
-                    <span className="font-semibold">Нажмите для загрузки</span> или перетащите файлы
-                  </div>
-                  <p className="text-xs text-muted-foreground">PNG, JPG или WEBP (макс. 5 МБ на изображение)</p>
-                  <input
-                    id="images"
-                    type="file"
-                    accept="image/*"
-                    multiple
-                    className="sr-only"
-                    onChange={handleImageUpload}
-                    disabled={images.length >= 10}
-                  />
+                  <Upload className="mb-2 h-8 w-8 text-muted-foreground" />
+                  <span className="text-sm font-medium">Нажмите для загрузки</span>
+                  <span className="text-xs text-muted-foreground">PNG, JPG до 10 МБ</span>
+                  <input id="image-upload" type="file" accept="image/*" multiple className="hidden" onChange={handleImageUpload} />
                 </Label>
               </div>
-
               {images.length > 0 && (
-                <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
+                <div className="grid grid-cols-3 gap-4">
                   {images.map((image, index) => (
-                    <div key={index} className="relative aspect-square overflow-hidden rounded-lg border">
-                      <img
-                        src={image || "/placeholder.svg"}
-                        alt={`Фото ${index + 1}`}
-                        className="h-full w-full object-cover"
-                      />
+                    <div key={index} className="relative aspect-square overflow-hidden rounded-lg">
+                      <img src={image} alt={`Фото ${index + 1}`} className="h-full w-full object-cover" />
                       <button
                         type="button"
                         onClick={() => removeImage(index)}
-                        className="absolute right-1 top-1 rounded-full bg-background p-1 shadow-sm"
+                        className="absolute right-1 top-1 rounded-full bg-background/80 p-1 hover:bg-background"
                       >
                         <X className="h-4 w-4" />
                       </button>
@@ -251,115 +241,32 @@ export default function NewPropertyPage() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Удобства</CardTitle>
-              <CardDescription>Выберите все, что есть в вашем объекте</CardDescription>
+              <CardTitle>Что включено</CardTitle>
+              <CardDescription>Отметьте, что получат участники</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="amenity-pool"
-                    checked={amenities.pool}
-                    onCheckedChange={(checked) => setAmenities({ ...amenities, pool: !!checked })}
-                  />
-                  <label
-                    htmlFor="amenity-pool"
-                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  >
-                    Бассейн
-                  </label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="amenity-garage"
-                    checked={amenities.garage}
-                    onCheckedChange={(checked) => setAmenities({ ...amenities, garage: !!checked })}
-                  />
-                  <label
-                    htmlFor="amenity-garage"
-                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  >
-                    Гараж
-                  </label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="amenity-garden"
-                    checked={amenities.garden}
-                    onCheckedChange={(checked) => setAmenities({ ...amenities, garden: !!checked })}
-                  />
-                  <label
-                    htmlFor="amenity-garden"
-                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  >
-                    Сад
-                  </label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="amenity-balcony"
-                    checked={amenities.balcony}
-                    onCheckedChange={(checked) => setAmenities({ ...amenities, balcony: !!checked })}
-                  />
-                  <label
-                    htmlFor="amenity-balcony"
-                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  >
-                    Балкон
-                  </label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="amenity-elevator"
-                    checked={amenities.elevator}
-                    onCheckedChange={(checked) => setAmenities({ ...amenities, elevator: !!checked })}
-                  />
-                  <label
-                    htmlFor="amenity-elevator"
-                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  >
-                    Лифт
-                  </label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="amenity-ac"
-                    checked={amenities.airConditioning}
-                    onCheckedChange={(checked) => setAmenities({ ...amenities, airConditioning: !!checked })}
-                  />
-                  <label
-                    htmlFor="amenity-ac"
-                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  >
-                    Кондиционер
-                  </label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="amenity-furnished"
-                    checked={amenities.furnished}
-                    onCheckedChange={(checked) => setAmenities({ ...amenities, furnished: !!checked })}
-                  />
-                  <label
-                    htmlFor="amenity-furnished"
-                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  >
-                    С мебелью
-                  </label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="amenity-pet"
-                    checked={amenities.petFriendly}
-                    onCheckedChange={(checked) => setAmenities({ ...amenities, petFriendly: !!checked })}
-                  />
-                  <label
-                    htmlFor="amenity-pet"
-                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  >
-                    Можно с питомцами
-                  </label>
-                </div>
+              <div className="grid gap-3">
+                {[
+                  { key: "medal", label: "🥇 Медаль финишёра" },
+                  { key: "tshirt", label: "👕 Футболка участника" },
+                  { key: "nutrition", label: "🍌 Питание на трассе" },
+                  { key: "timing", label: "⏱️ Хронометраж" },
+                  { key: "photo", label: "📸 Фотосъёмка" },
+                  { key: "certificate", label: "📜 Сертификат" },
+                  { key: "parking", label: "🅿️ Парковка" },
+                  { key: "firstAid", label: "🚑 Медпункт" },
+                ].map(({ key, label }) => (
+                  <div key={key} className="flex items-center space-x-2">
+                    <Checkbox
+                      id={`inc-${key}`}
+                      checked={includes[key as keyof typeof includes]}
+                      onCheckedChange={(checked) => setIncludes({ ...includes, [key]: !!checked })}
+                    />
+                    <label htmlFor={`inc-${key}`} className="text-sm font-medium cursor-pointer">
+                      {label}
+                    </label>
+                  </div>
+                ))}
               </div>
             </CardContent>
           </Card>
@@ -367,9 +274,9 @@ export default function NewPropertyPage() {
 
         <div className="mt-8 flex justify-end gap-4">
           <Link to="/properties">
-            <Button variant="outline">Отмена</Button>
+            <Button type="button" variant="outline">Отмена</Button>
           </Link>
-          <Button type="submit">Опубликовать</Button>
+          <Button type="submit">Разместить мероприятие</Button>
         </div>
       </form>
     </div>
